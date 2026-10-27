@@ -1,6 +1,6 @@
 /* =========================================================
    ShelfLife Radar — the app pages around the Shelf
-   (tab bar, page headers, Calendar, Insights, Settings).
+   (tab bar, page headers, the Shelf's week strip, Insights, Settings).
    Same paper, ink and single violet accent as demo.css; amber/coral only mean expiry risk.
    Motion uses transform/opacity; styles.css turns it all off for reduced motion.
    ========================================================= */
@@ -41,96 +41,35 @@
 .pageblock { margin-top: 56px; }
 .pageblock .group__head { align-items: center; }
 
-/* ---------- Calendar: the next 7 days ---------- */
-.calweek { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; margin-top: 16px; }
-.calweek__day {
-  display: grid; justify-items: center; gap: 8px; padding: 12px 4px 10px; border-radius: 6px;
-  text-align: center; transition: background-color 0.25s ease, transform 0.35s var(--ease);
+/* ---------- The Shelf: the next 7 days ----------
+   Seven days, one bar each (how many batches expire that day, coloured by the most urgent).
+   Choosing a day narrows the list to that day's batches; choosing it again shows everything. */
+.week { margin: 0 0 30px; }
+.week__head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+.week__title { font-size: 13px; font-weight: 600; letter-spacing: 0.02em; color: var(--ink-soft); }
+.week__hint { font-size: 12.5px; color: var(--muted); }
+.week__days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
+.week__day {
+  display: grid; justify-items: center; gap: 6px; padding: 10px 4px 8px; border-radius: 6px;
+  text-align: center; transition: background-color 0.25s ease, box-shadow 0.25s ease, transform 0.35s var(--ease);
 }
-.calweek__day:hover { background: rgba(121, 101, 242, 0.07); transform: translateY(-3px); }
-.calweek__name { font-size: 13px; font-weight: 500; color: var(--ink-soft); }
-.calweek__bar { position: relative; display: flex; align-items: flex-end; justify-content: center; width: 100%; height: 70px; }
-.calweek__bar::before { content: ""; position: absolute; left: 22%; right: 22%; bottom: 0; height: 1px; background: var(--rule-strong); }
-.calweek__bar i {
-  display: block; width: 56%; max-width: 34px; height: calc(var(--n, 0) * 13px + 2px); border-radius: 3px 3px 0 0; background: var(--mark-bar);
-  transform: scaleY(0); transform-origin: bottom; transition: transform 0.9s cubic-bezier(0.34, 1.3, 0.64, 1) calc(var(--i, 0) * 70ms);
-}
-.calweek.is-grown .calweek__bar i { transform: none; }
-.calweek__day--expired .calweek__bar i, .calweek__day--critical .calweek__bar i { background: var(--coral); }
-.calweek__day--high .calweek__bar i, .calweek__day--medium .calweek__bar i { background: var(--amber); }
-.calweek__day--none .calweek__bar i { height: 0; }
-.calweek__count { font-size: 12.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
-
-/* ---------- Calendar: the month ---------- */
-.cal__head { gap: 12px; }
-.cal__nav { display: flex; align-items: center; gap: 10px; }
-.cal__arrow { display: inline-grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--rule-strong); color: var(--ink); transition: background-color 0.2s ease, transform 0.35s var(--ease), border-color 0.2s ease; }
-.cal__arrow svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.cal__arrow:hover { background: rgba(121, 101, 242, 0.08); border-color: var(--accent); }
-[data-cal-prev]:hover { transform: translateX(-3px); }
-[data-cal-next]:hover { transform: translateX(3px); }
-.cal__arrow:active { transform: scale(0.9); }
-.cal__sum { margin-top: 16px; font-family: var(--serif); font-size: 22px; line-height: 1.3; max-width: 44rem; }
-
-.cal__layout { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); gap: 44px; align-items: start; margin-top: 22px; }
-.cal__weekdays, .cal__grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
-.cal__weekdays span { padding-bottom: 6px; font-size: 12.5px; font-weight: 500; color: var(--muted); text-align: center; }
-.cal__day {
-  position: relative; display: flex; flex-direction: column; justify-content: space-between;
-  aspect-ratio: 1 / 0.92; padding: 8px 8px 9px; border-radius: 6px; text-align: left;
-  background: rgba(255, 255, 255, 0.35); box-shadow: inset 0 0 0 1px var(--rule);
-  transition: background-color 0.25s ease, box-shadow 0.25s ease, transform 0.35s var(--ease);
-}
-.cal__day:hover { background: rgba(121, 101, 242, 0.06); transform: translateY(-2px); }
-.cal__day:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.cal__num { position: relative; z-index: 1; width: fit-content; font-family: var(--serif); font-size: 20px; line-height: 1; font-variant-numeric: tabular-nums; }
-.cal__day.is-other { opacity: 0.35; }
-.cal__day.is-past .cal__num { color: var(--muted); }
-.cal__day--expired .cal__num, .cal__day--critical .cal__num { color: var(--coral-ink); }
-/* today: circled, like the date stamp */
-.cal__day.is-today .cal__num { color: var(--accent); }
-.cal__day.is-today .cal__num::after { content: ""; position: absolute; inset: -6px -8px; border-radius: 50%; border: 1.5px solid var(--accent); transform: rotate(-8deg); }
-/* the chosen day: a violet wash and edge that spring in */
-.cal__day.is-selected { background: rgba(121, 101, 242, 0.12); box-shadow: inset 0 0 0 1.5px var(--accent); animation: pick 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.week__day:hover:not(:disabled) { background: rgba(121, 101, 242, 0.07); transform: translateY(-3px); }
+.week__day:disabled { cursor: default; }
+.week__day[aria-pressed="true"] { background: rgba(121, 101, 242, 0.12); box-shadow: inset 0 0 0 1.5px var(--accent); animation: pick 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); }
 @keyframes pick { from { transform: scale(0.92); } }
-.cal__dots { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
-.cal__dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--mark-dot); }
-.cal__dot--expired { background: var(--coral); border-radius: 1px; transform: rotate(45deg) scale(0.9); }
-.cal__dot--critical { background: var(--coral); }
-.cal__dot--high { background: var(--amber); }
-.cal__dot--medium { background: transparent; box-shadow: inset 0 0 0 1.5px var(--amber); }
-.cal__more { font-size: 11px; font-weight: 600; color: var(--ink-soft); }
-/* new month: days fall in along the diagonal, then their dots pop */
-.cal__grid.is-cascading .cal__day { animation: calIn 0.5s var(--ease) calc(var(--i, 0) * 30ms) both; }
-.cal__grid.is-cascading .cal__dot { animation: dotPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--i, 0) * 30ms + 280ms + var(--j, 0) * 70ms) both; }
-.cal__grid.is-cascading .cal__dot--expired { animation-name: dotPopDiamond; }
-@keyframes calIn { from { opacity: 0; transform: translateY(10px) scale(0.96); } }
-@keyframes dotPop { from { transform: scale(0); } }
-@keyframes dotPopDiamond { from { transform: rotate(45deg) scale(0); } }
-.cal__key { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 14px; font-size: 12.5px; color: var(--ink-soft); }
-.cal__key > span { display: inline-flex; align-items: center; gap: 7px; }
-
-/* ---------- Calendar: the chosen day ---------- */
-.calday { position: sticky; top: 24px; padding: 22px 22px 24px; border-radius: 8px; background: rgba(255, 255, 255, 0.5); box-shadow: inset 0 0 0 1px var(--rule); min-height: 180px; }
-.calday__title { font-family: var(--serif); font-weight: 400; font-size: 26px; line-height: 1.1; }
-.calday__note { margin-top: 8px; font-size: 14.5px; line-height: 1.5; color: var(--ink-soft); }
-.calday__note--past { color: var(--coral-ink); }
-.calday__list { display: grid; margin-top: 14px; }
-.calday__item { display: grid; grid-template-columns: 10px minmax(0, 1fr) auto; grid-template-areas: "mark what level" "mark go go"; align-items: baseline; gap: 2px 12px; padding: 12px 0; border-top: 1px solid var(--rule); }
-.calday__mark { grid-area: mark; width: 8px; height: 8px; border-radius: 50%; background: var(--mark-dot); align-self: center; }
-.calday__item--expired .calday__mark { background: var(--coral); border-radius: 1px; transform: rotate(45deg); }
-.calday__item--critical .calday__mark { background: var(--coral); }
-.calday__item--high .calday__mark { background: var(--amber); }
-.calday__item--medium .calday__mark { box-shadow: inset 0 0 0 1.5px var(--amber); background: transparent; }
-.calday__what { grid-area: what; display: grid; min-width: 0; }
-.calday__what b { font-family: var(--serif); font-weight: 400; font-size: 19px; line-height: 1.2; }
-.calday__what span { font-size: 13px; color: var(--ink-soft); }
-.calday__level { grid-area: level; font-size: 13px; font-weight: 500; color: var(--ink-soft); }
-.calday__item--expired .calday__level, .calday__item--critical .calday__level { color: var(--coral-ink); }
-.calday__item--high .calday__level, .calday__item--medium .calday__level { color: var(--amber-ink); }
-.calday__go { grid-area: go; justify-self: start; margin-top: 6px; font-size: 13.5px; font-weight: 500; color: var(--accent); }
-.calday__go span { display: inline-block; transition: transform 0.35s var(--ease); }
-.calday__go:hover span { transform: translateX(5px); }
+.week__name { font-size: 13px; font-weight: 500; color: var(--ink-soft); }
+.week__day[aria-pressed="true"] .week__name { color: var(--accent); }
+.week__bar { position: relative; display: flex; align-items: flex-end; justify-content: center; width: 100%; height: 48px; }
+.week__bar::before { content: ""; position: absolute; left: 22%; right: 22%; bottom: 0; height: 1px; background: var(--rule-strong); }
+.week__bar i {
+  display: block; width: 56%; max-width: 34px; height: calc(var(--n, 0) * 9px + 2px); border-radius: 3px 3px 0 0; background: var(--mark-bar);
+  transform: scaleY(0); transform-origin: bottom; transition: transform 0.9s cubic-bezier(0.34, 1.3, 0.64, 1) calc(var(--i, 0) * 70ms), height 0.5s var(--ease);
+}
+.week.is-grown .week__bar i { transform: none; }
+.week__day--expired .week__bar i, .week__day--critical .week__bar i { background: var(--coral); }
+.week__day--high .week__bar i, .week__day--medium .week__bar i { background: var(--amber); }
+.week__day--none .week__bar i { height: 0; }
+.week__count { font-size: 12.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
 
 /* ---------- Phones ---------- */
 @media (max-width: 640px) {
@@ -154,20 +93,14 @@
   .pagehead__lead { font-size: 16px; }
   .pageblock { margin-top: 40px; }
 
-  .calweek { gap: 2px; }
-  .calweek__day { padding: 8px 0; }
-  .calweek__name { font-size: 11.5px; }
-  .calweek__count { font-size: 10.5px; }
-  .calweek__bar { height: 56px; }
-  .cal__head { flex-wrap: wrap; }
-  .cal__sum { font-size: 19px; }
-  .cal__layout { grid-template-columns: 1fr; gap: 22px; }
-  .cal__weekdays, .cal__grid { gap: 3px; }
-  .cal__day { aspect-ratio: 1 / 1.05; padding: 5px 4px 6px; }
-  .cal__num { font-size: 16px; }
-  .cal__dot { width: 6px; height: 6px; }
-  .cal__dots { gap: 2px; }
-  .calday { position: static; padding: 18px 16px 20px; }
+  .week { margin-bottom: 22px; }
+  .week__head { flex-wrap: wrap; row-gap: 2px; }
+  .week:not(.has-day) .week__hint { display: none; }
+  .week__days { gap: 2px; }
+  .week__day { padding: 8px 0 6px; }
+  .week__name { font-size: 11.5px; }
+  .week__count { font-size: 11px; }
+  .week__bar { height: 40px; }
 }
 
 /* =========================================================
@@ -374,12 +307,8 @@
 
 /* ---------- Dark theme: what a token can't flip ----------
    White washes become faint light washes; the soft lavender marks get a darker lavender. */
-[data-theme="dark"] .calweek__day:hover,
-[data-theme="dark"] .cal__day:hover { background: rgba(168, 152, 255, 0.08); }
-[data-theme="dark"] .cal__arrow:hover { background: rgba(168, 152, 255, 0.1); }
-[data-theme="dark"] .cal__day { background: rgba(255, 255, 255, 0.025); }
-[data-theme="dark"] .cal__day.is-selected { background: rgba(168, 152, 255, 0.14); }
-[data-theme="dark"] .calday,
+[data-theme="dark"] .week__day:hover:not(:disabled) { background: rgba(168, 152, 255, 0.08); }
+[data-theme="dark"] .week__day[aria-pressed="true"] { background: rgba(168, 152, 255, 0.14); }
 [data-theme="dark"] .welcome__inner { background: rgba(255, 255, 255, 0.035); }
 [data-theme="dark"] .pricing { background: rgba(168, 152, 255, 0.08); }
 [data-theme="dark"] .chip,

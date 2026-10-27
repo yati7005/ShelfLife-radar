@@ -10,15 +10,15 @@
  * Only runs on a real web address (https:// or localhost), never when opened as a file.
  * When the list of files changes, bump VERSION so old copies are cleared.
  */
-var VERSION = "shelflife-v7";
+var VERSION = "shelflife-v8";
 var FONTS = "shelflife-fonts-v2";
 var FILES = [
-  "./", "index.html", "demo.html", "calendar.html", "insights.html", "settings.html", "manifest.webmanifest",
+  "./", "index.html", "demo.html", "insights.html", "settings.html", "manifest.webmanifest",
   "css/styles.css", "css/home.css", "css/demo.css", "css/app.css",
   "js/main.js", "js/home.js",
   "js/demo/i18n-hi.js", "js/demo/i18n.js", "js/demo/inventory.js", "js/demo/store.js",
   "js/demo/csv.js", "js/demo/scan.js", "js/demo/ui.js", "js/demo/shell.js",
-  "js/demo/app.js", "js/demo/calendar.js", "js/demo/insights.js", "js/demo/settings.js",
+  "js/demo/app.js", "js/demo/insights.js", "js/demo/settings.js",
   "assets/favicon.svg", "assets/icon-192.png", "assets/icon-512.png"
 ];
 

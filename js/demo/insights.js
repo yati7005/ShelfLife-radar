@@ -43,7 +43,6 @@
   var costed = batches.filter(function (x) { return x.value !== null; });
   var uncosted = batches.length - costed.length;
   var stockValue = sum(costed);
-  var expiredOnShelf = batches.filter(function (x) { return x.days < 0; });
   var thisWeek = batches.filter(function (x) { return x.days >= 0 && x.days <= 7; });
   var atRisk14 = batches.filter(function (x) { return x.days <= 14; });
 
@@ -76,19 +75,10 @@
       tn(uncosted, "{n} batch has no cost recorded, so it isn’t in these amounts.", "{n} batches have no cost recorded, so they aren’t in these amounts.");
   })();
 
-  // ---------- 2. what to do (only what's true) ----------
+  // ---------- 2. where money is leaking (only what's true) ----------
+  // Money patterns only: what to do with a single batch is the Shelf's job, so it isn't repeated here.
   (function advice() {
     var items = [];
-    if (expiredOnShelf.length) items.push({ tone: "urgent", text: tn(expiredOnShelf.length,
-      "{n} batch is past its date but still on the shelf ({value}). Take it off sale and record it on the Shelf.",
-      "{n} batches are past their date but still on the shelf ({value}). Take them off sale and record them on the Shelf.", { value: money(sum(expiredOnShelf)) }),
-      link: { href: "demo.html", label: t("Open the Shelf") } });
-    var weekValue = sum(thisWeek);
-    var weekSales = salesValue(thisWeek);
-    if (thisWeek.length && stockValue && weekValue / stockValue >= 0.1) items.push({ tone: "soon", text: weekSales ?
-      t("{value} ({pct}% of your stock) expires within 7 days — that’s {sales} in sales. Plan markdowns now, before the last days.", { value: money(weekValue), pct: pct(weekValue, stockValue), sales: money(weekSales) }) :
-      t("{value} ({pct}% of your stock) expires within 7 days. Plan markdowns now, before the last days.", { value: money(weekValue), pct: pct(weekValue, stockValue) }),
-      link: { href: "calendar.html", label: t("See the days") } });
     // a supplier who owes money for returns
     var owed = {};
     wo.forEach(function (x) { if (x.w.claim === "pending" && x.value !== null) owed[x.w.supplier || ""] = (owed[x.w.supplier || ""] || 0) + x.value; });
@@ -107,14 +97,21 @@
     var topCat = Object.keys(lossByCat).sort(function (a, b) { return lossByCat[b] - lossByCat[a]; })[0];
     if (topCat && lossCount >= 2 && lossByCat[topCat] / lossTotal >= 0.4) items.push({ tone: "change", text: t(
       "{category} causes {pct}% of your losses. Order it in smaller batches, more often.", { category: t(topCat), pct: pct(lossByCat[topCat], lossTotal) }) });
-    if (uncosted) items.push({ tone: "info", text: tn(uncosted,
-      "{n} batch has no cost recorded. Add costs on the Shelf to see the full picture.",
-      "{n} batches have no cost recorded. Add costs on the Shelf to see the full picture.") });
+    // the supplier whose stock is lost the most
+    var lossBySup = {};
+    wo.forEach(function (x) { if (isLoss(x.w) && x.value !== null && x.w.supplier) lossBySup[x.w.supplier] = (lossBySup[x.w.supplier] || 0) + x.value; });
+    var topSup = Object.keys(lossBySup).sort(function (a, b) { return lossBySup[b] - lossBySup[a]; })[0];
+    if (topSup && lossCount >= 2 && lossBySup[topSup] / lossTotal >= 0.5) items.push({ tone: "change", text: t(
+      "Stock from {supplier} causes {pct}% of your losses ({value}). Ask them for longer dates, or take smaller deliveries.", { supplier: topSup, pct: pct(lossBySup[topSup], lossTotal), value: money(lossBySup[topSup]) }) });
+    // markdowns earn back more than throwing away: say so when this week's stock has selling prices
+    var weekSales = salesValue(thisWeek.filter(function (x) { return x.level.id === "high"; }));
+    if (weekSales) items.push({ tone: "soon", text: t(
+      "Stock worth {sales} in sales expires in 4–7 days. Selling it at 15–20% off brings back about {back}; throwing it away later brings back nothing.", { sales: money(weekSales), back: money(Math.round(weekSales * 0.82)) }) });
     var list = root.querySelector("[data-ins-advice]");
     list.innerHTML = items.length ? items.map(function (it) {
       return '<li class="advice advice--' + it.tone + '"><span class="advice__mark" aria-hidden="true"></span><p>' + esc(it.text) +
         (it.link ? ' <a href="' + it.link.href + '" data-page-link class="advice__go">' + esc(it.link.label) + ' <span aria-hidden="true">→</span></a>' : "") + "</p></li>";
-    }).join("") : '<li class="advice advice--ok"><span class="advice__mark" aria-hidden="true"></span><p>' + t("Nothing needs changing right now. Your shelf is in good shape.") + "</p></li>";
+    }).join("") : '<li class="advice advice--ok"><span class="advice__mark" aria-hidden="true"></span><p>' + t("No money leaks to fix right now.") + "</p></li>";
   })();
 
   // ---------- chart helpers ----------

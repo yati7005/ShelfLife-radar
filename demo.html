@@ -46,7 +46,7 @@
         </button>
       </div>
     </header>
-    <!-- Shelf · Calendar · Insights · Settings (built by shell.js; at the bottom on phones) -->
+    <!-- Shelf · Insights · Settings (built by shell.js; at the bottom on phones) -->
     <nav class="apptabs" aria-label="App" data-t-attr="aria-label" data-apptabs="shelf"></nav>
 
     <!-- Opening: identity only — no statistics -->
@@ -68,6 +68,11 @@
     <!-- Inventory: the part you act on -->
     <main class="inventory" id="inventory" tabindex="-1" aria-labelledby="inventory-title">
       <h2 class="sr-only" id="inventory-title" data-t>Inventory</h2>
+      <!-- The next 7 days: a bar per day; choosing a day shows only its batches (built by app.js) -->
+      <section class="week" aria-labelledby="week-title" data-week hidden>
+        <div class="week__head"><h3 class="week__title" id="week-title" data-t>The next 7 days</h3><p class="week__hint" aria-live="polite" data-week-hint></p></div>
+        <div class="week__days" role="group" aria-labelledby="week-title" data-week-days></div>
+      </section>
       <div class="controls">
         <div class="find">
           <label class="sr-only" for="find-input" data-t>Find a product by name, batch, supplier or barcode</label>

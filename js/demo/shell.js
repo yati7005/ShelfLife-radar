@@ -1,6 +1,6 @@
 /*
- * ShelfLife Radar — the frame shared by the app pages: the tab bar (Shelf · Calendar ·
- * Insights · Settings) and the "Install app" button.
+ * ShelfLife Radar — the frame shared by the app pages: the tab bar (Shelf · Insights ·
+ * Settings) and the "Install app" button.
  *
  * The tab bar is built here so every page gets the same one. Its underline slides from the
  * tab you came from to the one you're on (the last tab is remembered for this browser tab).
@@ -15,13 +15,11 @@
 
   var ICON = {
     shelf: '<path d="M3 16.5h14M3 9.5h14" /><rect x="5" y="4" width="3.4" height="5.5" rx=".4" /><rect x="10.2" y="6" width="4" height="3.5" rx=".4" /><rect x="5.4" y="11.6" width="4.8" height="4.9" rx=".4" /><rect x="12" y="12.6" width="3" height="3.9" rx=".4" />',
-    calendar: '<rect x="3" y="4.5" width="14" height="12.5" rx="1.5" /><path d="M3 8.5h14M7 2.5v4M13 2.5v4" /><circle cx="7.5" cy="12.5" r=".9" class="fill" /><circle cx="12.5" cy="12.5" r=".9" class="fill" />',
     insights: '<path d="M3.5 16.5h13M6.2 16.5v-5M10 16.5V6M13.8 16.5V9" />',
     settings: '<path d="M4 6h12M4 14h12" /><circle cx="8" cy="6" r="2" class="knob" /><circle cx="12.5" cy="14" r="2" class="knob" />'
   };
   var TABS = [
     { id: "shelf", href: "demo.html", label: "Shelf" },
-    { id: "calendar", href: "calendar.html", label: "Calendar" },
     { id: "insights", href: "insights.html", label: "Insights" },
     { id: "settings", href: "settings.html", label: "Settings" }
   ];

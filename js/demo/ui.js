@@ -1,5 +1,5 @@
 /*
- * ShelfLife Radar — small interface pieces shared by every app page (Shelf, Calendar,
+ * ShelfLife Radar — small interface pieces shared by every app page (Shelf,
  * Insights, Settings): safe text, notifications, and the motion helpers.
  * Every animation here does nothing when the user prefers reduced motion.
  */

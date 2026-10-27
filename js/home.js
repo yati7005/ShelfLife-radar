@@ -156,18 +156,19 @@
   if (!SL || !features.length) return;
   var reduced = SL.reduced;
 
-  // the mini calendar: five weeks, with a few days carrying expiry dots and today circled
-  var cal = document.querySelector("[data-art-cal]");
-  if (cal) {
-    var DOTS = { 3: ["expired"], 9: ["critical"], 10: ["critical", "high"], 12: ["high"], 17: ["medium", "medium", "high"], 22: ["low"], 26: ["low", "medium"], 31: ["low"] };
-    var html = "";
-    ["M", "T", "W", "T", "F", "S", "S"].forEach(function (d) { html += '<span class="art-cal__wd">' + d + "</span>"; });
-    for (var i = 0; i < 35; i++) {
-      var dots = (DOTS[i] || []).map(function (k, j) { return '<i class="art-cal__dot art-cal__dot--' + k + '" style="--j:' + j + '"></i>'; }).join("");
-      html += '<span class="art-cal__day' + (i === 8 ? " is-today" : "") + (i < 2 || i > 32 ? " is-other" : "") + '" style="--d:' + (Math.floor(i / 7) + i % 7) + '">' +
-        "<b>" + ((i + 29) % 31 + 1) + "</b>" + (dots ? "<span>" + dots + "</span>" : "") + "</span>";
-    }
-    cal.innerHTML = html;
+  // the week strip from the Shelf: seven days, a bar each; then Saturday gets chosen
+  var week = document.querySelector("[data-art-week]");
+  if (week) {
+    var DAYS = ["Today", "Thu", "Fri", "Sat", "Sun", "Mon", "Tue"];
+    var COUNT = [1, 2, 0, 3, 1, 0, 2];
+    var html = '<span class="art-week__title">The next 7 days</span><div class="art-week__days">';
+    DAYS.forEach(function (d, i) {
+      var level = !COUNT[i] ? "none" : i <= 3 ? "critical" : "high";
+      html += '<span class="art-week__day art-week__day--' + level + (i === 3 ? " is-chosen" : "") + '" style="--i:' + i + ";--n:" + COUNT[i] + '">' +
+        "<em>" + d + "</em><span class=\"art-week__bar\"><i></i></span><b>" + (COUNT[i] || "—") + "</b></span>";
+    });
+    html += '</div><p class="art-week__list"><span>Saturday only</span><i>Paneer 200g · 4 units</i><i>Brown Bread · 6 units</i><i>Curd 400g · 3 units</i></p>';
+    week.innerHTML = html;
   }
 
   // numbers count up from zero when their picture arrives

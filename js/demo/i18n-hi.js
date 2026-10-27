@@ -450,6 +450,12 @@ window.SL_HI = {
   "Settings": "सेटिंग",
   "Settings — a backup is due": "सेटिंग — बैकअप लेने का समय",
   "Today": "आज",
+  "Tap a day to see only its batches.": "किसी दिन पर टैप करें — सिर्फ़ उस दिन के बैच दिखेंगे।",
+  "Only {day}. Tap it again to see everything.": "सिर्फ़ {day}। सब कुछ देखने के लिए उसी पर फिर टैप करें।",
+  "Where money leaks": "पैसा कहाँ जा रहा है",
+  "No money leaks to fix right now.": "अभी पैसे का कोई नुकसान ठीक करने को नहीं है।",
+  "Stock from {supplier} causes {pct}% of your losses ({value}). Ask them for longer dates, or take smaller deliveries.": "{supplier} के माल से आपका {pct}% नुकसान होता है ({value})। उनसे लंबी तारीख़ वाला माल माँगिए, या छोटी डिलीवरी लीजिए।",
+  "Stock worth {sales} in sales expires in 4–7 days. Selling it at 15–20% off brings back about {back}; throwing it away later brings back nothing.": "{sales} की बिक्री वाला माल 4–7 दिनों में एक्सपायर होगा। 15–20% छूट पर बेचने से लगभग {back} वापस आएँगे; बाद में फेंकने से कुछ नहीं।",
   "Later": "बाद में",
   "That can’t be undone any more — something changed since.": "अब इसे वापस नहीं लिया जा सकता — तब से कुछ बदल चुका है।",
 

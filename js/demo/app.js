@@ -87,7 +87,7 @@
     return ids;
   }
 
-  var state = { filter: "all", query: "", openId: null, mode: null };   // mode: { row, kind }
+  var state = { filter: "all", query: "", day: null, openId: null, mode: null };   // mode: { row, kind }; day: "YYYY-MM-DD" or null
 
   var $ = function (sel) { return document.querySelector(sel); };
   var groupsEl = $("[data-groups]");
@@ -141,7 +141,7 @@
     var digits = q.replace(/[\s-]/g, "");
     return p.name.toLowerCase().indexOf(q) !== -1 || (p.barcode && /^\d+$/.test(digits) && p.barcode.indexOf(digits) !== -1) || (b && ((b.lot && b.lot.toLowerCase().indexOf(q) !== -1) || (b.supplier && b.supplier.toLowerCase().indexOf(q) !== -1)));
   }
-  function matches(it) { return matchesQuery(it.p, it.b) && (state.filter === "all" || it.level.id === state.filter); }
+  function matches(it) { return matchesQuery(it.p, it.b) && (state.filter === "all" || it.level.id === state.filter) && (!state.day || it.b.expires === state.day); }
 
   function plain(it) {
     var d = it.days;
@@ -210,6 +210,45 @@
     var wide = window.matchMedia("(min-width: 641px)");
     if (!reduced) SL.onScroll(function () { el.style.setProperty("--sy", wide.matches ? Math.min(window.scrollY, 600) * 0.12 + "px" : "0px"); });
   })();
+
+  // ---------- The next 7 days: one bar per day; choosing a day narrows the list to it ----------
+  var weekEl = $("[data-week]");
+  var weekDaysEl = $("[data-week-days]");
+  var fmtWeekday = new Intl.DateTimeFormat(LOC, { weekday: "short" });
+  var fmtDayLong = new Intl.DateTimeFormat(LOC, { weekday: "long", day: "numeric", month: "long" });
+  function renderWeek(items) {
+    var html = "", any = false;
+    for (var i = 0; i < 7; i++) {
+      var d = addDays(i), key = Inv.toISO(d);
+      var n = items.filter(function (it) { return it.b.expires === key; }).length;
+      var level = n ? Inv.classify(i).id : "none";      // every batch on one day shares its risk level
+      var on = state.day === key;
+      if (n) any = true;
+      var label = fmtDayLong.format(d) + ", " + (n ? tn(n, "{n} batch expires", "{n} batches expire") : t("nothing expires"));
+      html += '<button type="button" class="week__day week__day--' + level + '" data-week-day="' + key + '" style="--i:' + i + ";--n:" + Math.min(n, 4) + '"' +
+        ' aria-pressed="' + on + '" aria-label="' + esc(label) + '"' + (n || on ? "" : " disabled") + ">" +
+        '<span class="week__name">' + esc(i === 0 ? t("Today") : fmtWeekday.format(d)) + "</span>" +
+        '<span class="week__bar" aria-hidden="true"><i></i></span>' +
+        '<span class="week__count" aria-hidden="true">' + (n || "—") + "</span></button>";
+    }
+    // only rebuild what changed, so a bar that's already grown doesn't replay
+    if (weekDaysEl.innerHTML !== html) weekDaysEl.innerHTML = html;
+    weekEl.hidden = !any && !state.day;
+    weekEl.classList.toggle("has-day", !!state.day);
+    $("[data-week-hint]").textContent = state.day ?
+      t("Only {day}. Tap it again to see everything.", { day: fmtDayLong.format(Inv.parseISO(state.day)) }) :
+      t("Tap a day to see only its batches.");
+  }
+  weekDaysEl.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-week-day]");
+    if (!b || b.disabled) return;
+    var key = b.getAttribute("data-week-day");
+    state.day = state.day === key ? null : key;        // choosing the chosen day again shows everything
+    applyChange();
+    var btn = weekDaysEl.querySelector('[data-week-day="' + key + '"]');
+    if (btn) btn.focus({ preventScroll: true });
+  });
+  SL.whenLoaded(function () { setTimeout(function () { weekEl.classList.add("is-grown"); }, reduced ? 0 : 700); });
 
   // ---------- Filter tabs ----------
   filtersEl.innerHTML = FILTERS.map(function (f) {
@@ -451,13 +490,13 @@
     if (!p) {
       // unknown: show it in the search, where the empty state offers to add it
       if (state.openId) closeDetail();
-      state.query = code; state.filter = "all"; searchEl.value = code;
+      state.query = code; state.filter = "all"; state.day = null; searchEl.value = code;
       applyChange();
       var add = emptyEl.querySelector("[data-empty-add-code]");
       if (add) add.focus({ preventScroll: true });
       return;
     }
-    state.query = ""; state.filter = "all"; searchEl.value = "";
+    state.query = ""; state.filter = "all"; state.day = null; searchEl.value = "";
     render();
     var key = batchesOf[p.id].length ? batchesOf[p.id][0].id : "nostock-" + p.id;
     goToRow(key);
@@ -795,6 +834,7 @@
     // a completion that belonged to an earlier recommendation no longer applies
     var stale = items.filter(function (it) { return it.stale; });
     if (stale.length) { stale.forEach(function (it) { delete data.statuses[it.b.id]; }); items = allInfo(); persist(); }
+    renderWeek(items);
 
     var live = {};
     var shown = 0;
@@ -807,7 +847,7 @@
         var li = rowEls[row.key] || (rowEls[row.key] = buildRow(row.key));
         live[row.key] = true;
         updateRow(li, row);
-        li.hidden = row.b ? !matches(row) : !(state.filter === "all" && matchesQuery(row.p, null));
+        li.hidden = row.b ? !matches(row) : !(state.filter === "all" && !state.day && matchesQuery(row.p, null));
         if (!li.hidden) visible++;
         list.appendChild(li);
       });
@@ -883,7 +923,7 @@
 
   // Make sure a row that was just created or changed is visible (clear a search/filter hiding it).
   function showRowIfHidden(row) {
-    if (row && row.b && !matches(row)) { state.query = ""; state.filter = "all"; searchEl.value = ""; }
+    if (row && row.b && !matches(row)) { state.query = ""; state.filter = "all"; state.day = null; searchEl.value = ""; }
   }
   // Bring a row into view, mark it, and put keyboard focus on it.
   function revealRow(key, after) {
@@ -972,7 +1012,7 @@
   function goToRow(key) {
     var li = rowEls[key];
     if (!li) return;
-    if (li.hidden) { state.query = ""; state.filter = "all"; searchEl.value = ""; render(); }
+    if (li.hidden) { state.query = ""; state.filter = "all"; state.day = null; searchEl.value = ""; render(); }
     openDetail(key);
     var r = li.getBoundingClientRect();
     window.scrollTo({ top: r.top + window.scrollY - 120, behavior: reduced ? "auto" : "smooth" });
@@ -1448,7 +1488,7 @@
   });
   emptyEl.addEventListener("click", function (e) {
     if (e.target.closest("[data-clear]")) {
-      state.query = ""; state.filter = "all"; searchEl.value = "";
+      state.query = ""; state.filter = "all"; state.day = null; searchEl.value = "";
       renderFilters();
       applyChange();
       searchEl.focus();
@@ -1522,7 +1562,7 @@
   }
   if (firstVisit()) showWelcome();
 
-  // The Calendar and Insights pages link straight to a batch: demo.html#batch=<id> opens it.
+  // Other pages can link straight to a batch: demo.html#batch=<id> opens it.
   var linked = /^#batch=([A-Za-z0-9_-]{1,64})$/.exec(location.hash);
   if (linked) {
     if (history.replaceState) history.replaceState(null, "", location.pathname + location.search);   // a reload shouldn't reopen it
