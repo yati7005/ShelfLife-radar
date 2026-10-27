@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title data-t>The Shelf — ShelfLife Radar</title>
+  <meta name="description" content="ShelfLife Radar demo: everything has a date. Fictional inventory, sorted by expiry." />
+  <meta name="theme-color" content="#F5F1E8" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- The Devanagari fonts are split by script, so they only download when Hindi text is on the page -->
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Tiro+Devanagari+Hindi:ital@0;1&family=Noto+Sans+Devanagari:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/demo.css" />
+  <link rel="stylesheet" href="css/app.css" />
+  <link rel="prefetch" href="index.html" />
+  <script>(function (d) { d.classList.add("js"); var t; try { t = localStorage.getItem("shelflife-theme"); } catch (e) {} if (t !== "light" && t !== "dark") t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; d.setAttribute("data-theme", t); })(document.documentElement);</script>
+</head>
+<body class="paper">
+  <a class="skip-link" href="#inventory" data-t>Skip to the inventory</a>
+
+  <div class="sheet" data-demo>
+    <header class="mast">
+      <a href="index.html" class="mast__brand" data-page-link>
+        <svg class="mast__mark" viewBox="0 0 32 32" width="24" height="24" aria-hidden="true">
+          <circle cx="16" cy="16" r="15" fill="currentColor" />
+          <circle cx="16" cy="16" r="9.5" fill="none" stroke="#EAE6FF" stroke-opacity=".35" stroke-width="1.4" />
+          <path class="brand__sweep" d="M16 16 L16 3 A13 13 0 0 1 27.3 9.5 Z" fill="#EAE6FF" fill-opacity=".85" />
+          <circle class="brand__blip" cx="22.5" cy="19.5" r="1.9" fill="#9D8CFF" />
+        </svg>
+        <span>ShelfLife <em>Radar</em></span>
+      </a>
+      <div class="mast__right">
+        <!-- English / हिंदी: filled in by i18n.js -->
+        <!-- shown only when the browser offers to install the site as an app -->
+        <button type="button" class="mast__link mast__install" data-install hidden data-t>Install app</button>
+        <button type="button" class="theme-toggle" data-theme-toggle aria-label="Switch to dark mode" title="Switch to dark mode">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path class="theme-toggle__moon" d="M16.6 12.4A7 7 0 0 1 7.6 3.4a7 7 0 1 0 9 9Z" /><g class="theme-toggle__sun"><circle cx="10" cy="10" r="3.6" /><path d="M10 1.8v1.8M10 16.4v1.8M1.8 10h1.8M16.4 10h1.8M4.2 4.2l1.3 1.3M14.5 14.5l1.3 1.3M4.2 15.8l1.3-1.3M14.5 5.5l1.3-1.3" /></g></svg>
+        </button>
+        <button type="button" class="mast__link mast__lang" data-lang-switch></button>
+        <a href="index.html" class="mast__link mast__home" data-page-link data-t>Back to site</a>
+        <button type="button" class="info" data-info="about" aria-label="About this demo" data-t-attr="aria-label" aria-expanded="false" aria-controls="info-pop">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.25" /><path d="M10 9v5M10 6.2v.1" /></svg>
+        </button>
+      </div>
+    </header>
+    <!-- Shelf · Calendar · Insights · Settings (built by shell.js; at the bottom on phones) -->
+    <nav class="apptabs" aria-label="App" data-t-attr="aria-label" data-apptabs="shelf"></nav>
+
+    <!-- Opening: identity only — no statistics -->
+    <section class="opening" aria-labelledby="title">
+      <p class="opening__shop" data-shop-name hidden></p>
+      <h1 class="opening__title" id="title" data-split data-hero data-t-html>Everything has a date. <em>Know yours.</em></h1>
+      <p class="opening__lead hero-in" style="--d:560ms" data-t>ShelfLife Radar checks every product against today’s date and puts the ones that need you first at the top of the list.</p>
+      <!-- The signature: a grocer's date stamp that rolls forward to today, then presses down -->
+      <div class="stamp" data-stamp role="img" aria-label="">
+        <span class="stamp__label" aria-hidden="true" data-t>Checked against</span>
+        <span class="stamp__window" aria-hidden="true"><span class="stamp__roll" data-roll></span></span>
+        <span class="stamp__year" aria-hidden="true" data-year></span>
+      </div>
+    </section>
+
+    <!-- First visit: this is a sample shop; start your own when ready (filled in by app.js) -->
+    <section class="welcome" aria-labelledby="welcome-title" data-welcome hidden></section>
+
+    <!-- Inventory: the part you act on -->
+    <main class="inventory" id="inventory" tabindex="-1" aria-labelledby="inventory-title">
+      <h2 class="sr-only" id="inventory-title" data-t>Inventory</h2>
+      <div class="controls">
+        <div class="find">
+          <label class="sr-only" for="find-input" data-t>Find a product by name, batch, supplier or barcode</label>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+          <input id="find-input" type="search" placeholder="Find a product" data-t-attr="placeholder" autocomplete="off" data-search />
+          <!-- shown only where the browser can read barcodes from the camera -->
+          <button type="button" class="info find__scan" data-scan-search aria-label="Scan a barcode with the camera" data-t-attr="aria-label" hidden>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2.5 6V3.5h2.5M15 3.5h2.5V6M17.5 14v2.5H15M5 16.5H2.5V14M6 7v6M8.5 7v6M11 7v6M14 7v6" /></svg>
+          </button>
+        </div>
+        <div class="filter">
+          <div class="tabs" role="group" aria-label="Filter by risk level" data-t-attr="aria-label" data-filters></div>
+          <button type="button" class="info" data-info="levels" aria-label="What the risk levels mean" data-t-attr="aria-label" aria-expanded="false" aria-controls="info-pop">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.25" /><path d="M10 9v5M10 6.2v.1" /></svg>
+          </button>
+        </div>
+      </div>
+      <div class="inv__meta">
+        <p aria-live="polite"><span data-count></span><span data-count-tail></span></p>
+        <div class="inv__actions">
+          <!-- import, export, backup and reset are on the Settings tab -->
+          <button type="button" class="btn btn--primary btn--sm" data-add aria-expanded="false" aria-controls="adder" data-t>Add product</button>
+        </div>
+      </div>
+      <!-- Add product: expands in place, like a product's details -->
+      <section class="adder" id="adder" aria-labelledby="adder-title" data-adder inert>
+        <div class="adder__inner"><div class="adder__body" data-adder-body></div></div>
+      </section>
+      <div data-groups></div>
+      <div class="empty" data-empty hidden></div>
+
+      <!-- Written off: expired stock that has left the shelf, and what it cost -->
+      <section class="group ledger is-in" aria-labelledby="ledger-title">
+        <header class="group__head"><h3 class="group__title" id="ledger-title" data-t>Written off</h3><p class="group__note" data-ledger-note></p></header>
+        <p class="ledger__sum" aria-live="polite" data-ledger-sum></p>
+        <p class="ledger__more" data-ledger-more hidden></p>
+        <ol class="ledger__list" data-ledger-list></ol>
+        <p class="ledger__export" data-ledger-export-wrap hidden><button type="button" class="detail__link" data-ledger-export data-t>Download all write-offs (CSV)</button></p>
+      </section>
+    </main>
+
+    <footer class="colophon">
+      <p data-t>Corner Market is fictional, and so are its products, dates and quantities. Changes are saved in this browser only.</p>
+    </footer>
+  </div>
+
+  <div class="pop" id="info-pop" role="dialog" aria-modal="false" aria-labelledby="pop-title" data-pop hidden></div>
+  <div class="toasts" aria-live="polite" data-toasts></div>
+
+  <!-- the language goes first, so the headline is split into words already translated -->
+  <script src="js/demo/i18n-hi.js"></script>
+  <script src="js/demo/i18n.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/demo/inventory.js"></script>
+  <script src="js/demo/store.js"></script>
+  <script src="js/demo/csv.js"></script>
+  <script src="js/demo/scan.js"></script>
+  <script src="js/demo/ui.js"></script>
+  <script src="js/demo/shell.js"></script>
+  <script src="js/demo/app.js"></script>
+</body>
+</html>

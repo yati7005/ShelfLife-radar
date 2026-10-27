@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ShelfLife Radar — Everything has a date</title>
+  <meta name="description" content="ShelfLife Radar helps independent grocers notice what time is doing to their shelves, and decide what to do about it while there is still time." />
+  <meta name="theme-color" content="#F5F1E8" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/home.css" />
+  <link rel="prefetch" href="demo.html" />
+  <script>(function (d) { d.classList.add("js"); var t; try { t = localStorage.getItem("shelflife-theme"); } catch (e) {} if (t !== "light" && t !== "dark") t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; d.setAttribute("data-theme", t); })(document.documentElement);</script>
+</head>
+<body class="home">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="nav" data-nav>
+    <div class="wrap nav__inner">
+      <a href="#top" class="brand" aria-label="ShelfLife Radar, back to top">
+        <svg class="brand__mark" viewBox="0 0 32 32" width="24" height="24" aria-hidden="true">
+          <circle cx="16" cy="16" r="15" fill="currentColor" />
+          <circle cx="16" cy="16" r="9.5" fill="none" stroke="#EAE6FF" stroke-opacity=".35" stroke-width="1.4" />
+          <path class="brand__sweep" d="M16 16 L16 3 A13 13 0 0 1 27.3 9.5 Z" fill="#EAE6FF" fill-opacity=".85" />
+          <circle class="brand__blip" cx="22.5" cy="19.5" r="1.9" fill="#9D8CFF" />
+        </svg>
+        <span class="brand__name">ShelfLife <em>Radar</em></span>
+      </a>
+      <nav class="nav__links" aria-label="Primary">
+        <a href="#why" class="nav__link" data-spy="why">Why it matters</a>
+        <a href="#how" class="nav__link" data-spy="how">How it helps</a>
+        <a href="#inside" class="nav__link" data-spy="inside">Inside the app</a>
+      </nav>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-label="Switch to dark mode" title="Switch to dark mode">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path class="theme-toggle__moon" d="M16.6 12.4A7 7 0 0 1 7.6 3.4a7 7 0 1 0 9 9Z" /><g class="theme-toggle__sun"><circle cx="10" cy="10" r="3.6" /><path d="M10 1.8v1.8M10 16.4v1.8M1.8 10h1.8M16.4 10h1.8M4.2 4.2l1.3 1.3M14.5 14.5l1.3 1.3M4.2 15.8l1.3-1.3M14.5 5.5l1.3-1.3" /></g></svg>
+      </button>
+      <a href="demo.html" class="btn btn--primary btn--sm" data-page-link>Open the demo</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero. On larger screens it stays in place while scrolling moves time forward on the shelf. -->
+    <div class="hero-track" data-hero-track>
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="wrap hero__inner">
+          <div class="hero__copy">
+            <h1 class="hero__title" id="hero-title" data-split data-hero>Everything has a date. <em>What happens next is up to you.</em></h1>
+            <p class="hero__lead hero-in" style="--d:760ms">ShelfLife Radar helps independent grocers notice what time is doing to their shelves — and decide, while there is still time, what to do about it.</p>
+            <div class="hero__cta hero-in" style="--d:880ms">
+              <a href="demo.html" class="btn btn--primary btn--lg" data-page-link>
+                Open the demo
+                <svg class="btn__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- The one animated moment: a shelf where time passes, leaves a trace, then gets put in order -->
+          <figure class="scene" data-scene>
+            <div class="scene__today" aria-hidden="true"><span>Today</span><b data-scene-date></b></div>
+            <div class="scene__shelf" data-scene-shelf aria-hidden="true">
+              <span class="scene__scan"></span>
+              <span class="scene__plank"></span>
+            </div>
+            <figcaption class="scene__caption" data-scene-caption aria-live="polite"></figcaption>
+          </figure>
+        </div>
+      </section>
+    </div>
+
+    <!-- Why it matters: one editorial statement -->
+    <section class="why" id="why" aria-labelledby="why-title">
+      <div class="wrap why__inner">
+        <h2 class="kicker" id="why-title" data-reveal>Why it matters</h2>
+        <p class="why__text" data-split>Nothing on a shelf goes off all at once. It happens quietly — a carton pushed to the back, a date nobody read. ShelfLife Radar is made for the moment before that, <em>when there is still time to discount, move or reorder.</em></p>
+      </div>
+    </section>
+
+    <!-- How it helps: three steps, set as type -->
+    <section class="how" id="how" aria-labelledby="how-title">
+      <div class="wrap">
+        <h2 class="kicker" id="how-title" data-reveal>How it helps</h2>
+        <ol class="steps" data-reveal>
+          <li class="step" style="--n:0"><span class="step__n">i.</span><h3 class="step__title">Organise your inventory</h3><p class="step__text">Every product and its date, kept in one place.</p></li>
+          <li class="step" style="--n:1"><span class="step__n">ii.</span><h3 class="step__title">Notice expiry risks</h3><p class="step__text">Dates are checked against today, so nothing slips quietly past.</p></li>
+          <li class="step" style="--n:2"><span class="step__n">iii.</span><h3 class="step__title">Decide what needs attention</h3><p class="step__text">What needs you first comes first, with a suggested next step.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Inside the app: four pages, one job each. Each picture is drawn in HTML/CSS and comes alive as it scrolls in. -->
+    <section class="inside" id="inside" aria-labelledby="inside-title">
+      <div class="wrap">
+        <h2 class="kicker" id="inside-title" data-reveal>Inside the app</h2>
+        <p class="inside__lead" data-split>Four pages. <em>One job each.</em></p>
+
+        <article class="feature" data-feature>
+          <div class="feature__copy">
+            <span class="feature__n">01 — Shelf</span>
+            <h3 class="feature__title">What needs you first, first.</h3>
+            <p class="feature__text">Every batch is sorted by its date, with the next step spelled out — mark it down, move it to the front, or take it off sale. Record a sale in two taps, and see what a markdown leaves you over cost.</p>
+            <a class="feature__go" href="demo.html" data-page-link>Open the Shelf <span aria-hidden="true">→</span></a>
+          </div>
+          <div class="art art-shelf" aria-hidden="true">
+            <div class="art__row" style="--r:0;--f:0"><b>Fresh Milk 1L</b><span class="is-red">1 day overdue</span><i class="art__fuse"></i><em class="art__dot art__dot--expired"></em></div>
+            <div class="art__row" style="--r:1;--f:.07"><b>Greek Yogurt</b><span class="is-red">In 2 days</span><i class="art__fuse"></i><em class="art__dot art__dot--critical"></em></div>
+            <div class="art__row" style="--r:2;--f:.23"><b>Orange Juice</b><span class="is-amber">In 5 days</span><i class="art__fuse"></i><em class="art__dot art__dot--high"></em></div>
+            <div class="art__row" style="--r:3;--f:.73"><b>Tortilla Chips</b><span>In 22 days</span><i class="art__fuse"></i><em class="art__dot"></em></div>
+          </div>
+        </article>
+
+        <article class="feature feature--flip" data-feature>
+          <div class="feature__copy">
+            <span class="feature__n">02 — Calendar</span>
+            <h3 class="feature__title">See the busy days coming.</h3>
+            <p class="feature__text">Every batch is a dot on the day it expires. When Thursday has three dairy batches running out, you know on Monday — and plan the markdowns, the staff and the supplier call.</p>
+            <a class="feature__go" href="calendar.html" data-page-link>Open the Calendar <span aria-hidden="true">→</span></a>
+          </div>
+          <div class="art art-cal" data-art-cal aria-hidden="true"></div>
+        </article>
+
+        <article class="feature" data-feature>
+          <div class="feature__copy">
+            <span class="feature__n">03 — Insights</span>
+            <h3 class="feature__title">Where the money goes.</h3>
+            <p class="feature__text">What your shelves are worth, how much of it runs out this week, and which category or supplier the losses come from — with plain advice on what to change.</p>
+            <a class="feature__go" href="insights.html" data-page-link>Open Insights <span aria-hidden="true">→</span></a>
+          </div>
+          <div class="art art-ins" aria-hidden="true">
+            <span class="art-ins__label">On your shelves, at cost</span>
+            <b class="art-ins__value" data-count-to="25452">₹25,452</b>
+            <div class="art-ins__bars"><i style="--h:.32;--b:0"></i><i style="--h:.58;--b:1"></i><i style="--h:.44;--b:2"></i><i style="--h:.9;--b:3"></i><i style="--h:.36;--b:4"></i><i style="--h:.64;--b:5"></i><i style="--h:.22;--b:6"></i></div>
+            <p class="art-ins__tip"><em></em>Dairy causes 71% of your losses. Order it in smaller batches.</p>
+          </div>
+        </article>
+
+        <article class="feature feature--flip" data-feature>
+          <div class="feature__copy">
+            <span class="feature__n">04 — Every rupee counted</span>
+            <h3 class="feature__title">Sold, thrown away or sent back.</h3>
+            <p class="feature__text">Whatever leaves the shelf is recorded, so you know what was lost this month — and which suppliers still owe you credit for returns.</p>
+            <a class="feature__go" href="settings.html" data-page-link>Back it all up <span aria-hidden="true">→</span></a>
+          </div>
+          <div class="art art-ledger" aria-hidden="true">
+            <div class="art-ledger__line" style="--r:0"><b>Sold · Greek Yogurt</b><span>5 units</span><strong class="is-violet">₹700</strong></div>
+            <div class="art-ledger__line" style="--r:1"><b>Thrown away · Croissants</b><span>7 units</span><strong class="is-red">₹840</strong></div>
+            <div class="art-ledger__line" style="--r:2"><b>Returned · Fresh Milk</b><span>waiting on Gokul Dairy</span><strong>₹972</strong></div>
+            <div class="art-ledger__sum"><span>Waiting from suppliers</span><b data-count-to="972">₹972</b></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Closing invitation -->
+    <section class="end" aria-labelledby="end-title">
+      <div class="wrap end__inner">
+        <h2 class="end__title" id="end-title" data-split>Your shelf is waiting.</h2>
+        <a href="demo.html" class="btn btn--primary btn--lg end__btn" data-page-link data-reveal style="--d:300ms">
+          Open the demo
+          <svg class="btn__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot__inner">
+      <span class="foot__brand">ShelfLife <em>Radar</em></span>
+      <span>A prototype. The demo uses a fictional store and products.</span>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

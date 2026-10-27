@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title data-t>Settings — ShelfLife Radar</title>
+  <meta name="description" content="ShelfLife Radar settings: backup and restore, spreadsheets, and starting over." />
+  <meta name="theme-color" content="#F5F1E8" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Tiro+Devanagari+Hindi:ital@0;1&family=Noto+Sans+Devanagari:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/demo.css" />
+  <link rel="stylesheet" href="css/app.css" />
+  <script>(function (d) { d.classList.add("js"); var t; try { t = localStorage.getItem("shelflife-theme"); } catch (e) {} if (t !== "light" && t !== "dark") t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; d.setAttribute("data-theme", t); })(document.documentElement);</script>
+</head>
+<body class="paper">
+  <a class="skip-link" href="#settings" data-t>Skip to the settings</a>
+
+  <div class="sheet">
+    <header class="mast">
+      <a href="index.html" class="mast__brand" data-page-link>
+        <svg class="mast__mark" viewBox="0 0 32 32" width="24" height="24" aria-hidden="true">
+          <circle cx="16" cy="16" r="15" fill="currentColor" />
+          <circle cx="16" cy="16" r="9.5" fill="none" stroke="#EAE6FF" stroke-opacity=".35" stroke-width="1.4" />
+          <path class="brand__sweep" d="M16 16 L16 3 A13 13 0 0 1 27.3 9.5 Z" fill="#EAE6FF" fill-opacity=".85" />
+          <circle class="brand__blip" cx="22.5" cy="19.5" r="1.9" fill="#9D8CFF" />
+        </svg>
+        <span>ShelfLife <em>Radar</em></span>
+      </a>
+      <div class="mast__right">
+        <button type="button" class="mast__link mast__install" data-install hidden data-t>Install app</button>
+        <button type="button" class="theme-toggle" data-theme-toggle aria-label="Switch to dark mode" title="Switch to dark mode">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path class="theme-toggle__moon" d="M16.6 12.4A7 7 0 0 1 7.6 3.4a7 7 0 1 0 9 9Z" /><g class="theme-toggle__sun"><circle cx="10" cy="10" r="3.6" /><path d="M10 1.8v1.8M10 16.4v1.8M1.8 10h1.8M16.4 10h1.8M4.2 4.2l1.3 1.3M14.5 14.5l1.3 1.3M4.2 15.8l1.3-1.3M14.5 5.5l1.3-1.3" /></g></svg>
+        </button>
+        <button type="button" class="mast__link mast__lang" data-lang-switch></button>
+        <a href="index.html" class="mast__link mast__home" data-page-link data-t>Back to site</a>
+      </div>
+    </header>
+    <nav class="apptabs" aria-label="App" data-t-attr="aria-label" data-apptabs="settings"></nav>
+
+    <section class="pagehead" aria-labelledby="title">
+      <h1 class="pagehead__title" id="title" data-split data-hero data-t-html>Your data. <em>Kept safe.</em></h1>
+      <p class="pagehead__lead hero-in" style="--d:420ms" data-t>Everything ShelfLife knows lives in this browser. Back it up, move it with a spreadsheet, or start over.</p>
+    </section>
+
+    <main id="settings" tabindex="-1" data-settings>
+      <section class="group pageblock" aria-labelledby="data-title">
+        <header class="group__head"><h2 class="group__title" id="data-title" data-t>In this browser</h2></header>
+        <p class="set__counts" aria-live="polite" data-set-summary></p>
+        <p class="set__due" data-set-due></p>
+        <form class="set__name" data-set-name novalidate>
+          <label for="shop" data-t>Your shop’s name</label>
+          <span class="set__name-row">
+            <input id="shop" name="shop" type="text" maxlength="60" autocomplete="organization" placeholder="e.g. Sharma General Store" data-t-attr="placeholder" />
+            <button type="submit" class="btn btn--ghost btn--sm" data-t>Save</button>
+          </span>
+        </form>
+      </section>
+
+      <section class="group pageblock" aria-labelledby="backup-title">
+        <header class="group__head"><h2 class="group__title" id="backup-title" data-t>Backup</h2><p class="group__note" data-t>One file with everything</p></header>
+        <div class="set__panel" aria-live="polite" data-set-backup></div>
+      </section>
+
+      <section class="group pageblock" aria-labelledby="sheets-title">
+        <header class="group__head"><h2 class="group__title" id="sheets-title" data-t>Spreadsheets</h2><p class="group__note" data-t>Excel or Google Sheets</p></header>
+        <div class="set__panel" aria-live="polite" data-set-sheets></div>
+      </section>
+
+      <section class="group pageblock" aria-labelledby="reset-title">
+        <header class="group__head"><h2 class="group__title" id="reset-title" data-t>Start over</h2></header>
+        <div class="set__panel" aria-live="polite" data-set-reset></div>
+      </section>
+    </main>
+
+    <footer class="colophon">
+      <p data-t>Corner Market is fictional, and so are its products, dates and quantities. Changes are saved in this browser only.</p>
+    </footer>
+  </div>
+
+  <div class="toasts" aria-live="polite" data-toasts></div>
+
+  <script src="js/demo/i18n-hi.js"></script>
+  <script src="js/demo/i18n.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/demo/inventory.js"></script>
+  <script src="js/demo/store.js"></script>
+  <script src="js/demo/csv.js"></script>
+  <script src="js/demo/ui.js"></script>
+  <script src="js/demo/shell.js"></script>
+  <script src="js/demo/settings.js"></script>
+</body>
+</html>

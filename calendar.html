@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title data-t>Calendar — ShelfLife Radar</title>
+  <meta name="description" content="ShelfLife Radar calendar: what expires on which day, at a glance." />
+  <meta name="theme-color" content="#F5F1E8" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Tiro+Devanagari+Hindi:ital@0;1&family=Noto+Sans+Devanagari:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/demo.css" />
+  <link rel="stylesheet" href="css/app.css" />
+  <script>(function (d) { d.classList.add("js"); var t; try { t = localStorage.getItem("shelflife-theme"); } catch (e) {} if (t !== "light" && t !== "dark") t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; d.setAttribute("data-theme", t); })(document.documentElement);</script>
+</head>
+<body class="paper">
+  <a class="skip-link" href="#calendar" data-t>Skip to the calendar</a>
+
+  <div class="sheet">
+    <header class="mast">
+      <a href="index.html" class="mast__brand" data-page-link>
+        <svg class="mast__mark" viewBox="0 0 32 32" width="24" height="24" aria-hidden="true">
+          <circle cx="16" cy="16" r="15" fill="currentColor" />
+          <circle cx="16" cy="16" r="9.5" fill="none" stroke="#EAE6FF" stroke-opacity=".35" stroke-width="1.4" />
+          <path class="brand__sweep" d="M16 16 L16 3 A13 13 0 0 1 27.3 9.5 Z" fill="#EAE6FF" fill-opacity=".85" />
+          <circle class="brand__blip" cx="22.5" cy="19.5" r="1.9" fill="#9D8CFF" />
+        </svg>
+        <span>ShelfLife <em>Radar</em></span>
+      </a>
+      <div class="mast__right">
+        <button type="button" class="mast__link mast__install" data-install hidden data-t>Install app</button>
+        <button type="button" class="theme-toggle" data-theme-toggle aria-label="Switch to dark mode" title="Switch to dark mode">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path class="theme-toggle__moon" d="M16.6 12.4A7 7 0 0 1 7.6 3.4a7 7 0 1 0 9 9Z" /><g class="theme-toggle__sun"><circle cx="10" cy="10" r="3.6" /><path d="M10 1.8v1.8M10 16.4v1.8M1.8 10h1.8M16.4 10h1.8M4.2 4.2l1.3 1.3M14.5 14.5l1.3 1.3M4.2 15.8l1.3-1.3M14.5 5.5l1.3-1.3" /></g></svg>
+        </button>
+        <button type="button" class="mast__link mast__lang" data-lang-switch></button>
+        <a href="index.html" class="mast__link mast__home" data-page-link data-t>Back to site</a>
+      </div>
+    </header>
+    <nav class="apptabs" aria-label="App" data-t-attr="aria-label" data-apptabs="calendar"></nav>
+
+    <section class="pagehead" aria-labelledby="title">
+      <h1 class="pagehead__title" id="title" data-split data-hero data-t-html>When stock runs out. <em>Day by day.</em></h1>
+      <p class="pagehead__lead hero-in" style="--d:420ms" data-t>Every batch is a dot on the day it expires. See the busy days coming, and plan the markdowns before they arrive.</p>
+    </section>
+
+    <main id="calendar" tabindex="-1">
+      <!-- the next seven days, at a glance -->
+      <section class="group pageblock" aria-labelledby="week-title">
+        <header class="group__head"><h2 class="group__title" id="week-title" data-t>The next 7 days</h2></header>
+        <div class="calweek" data-cal-week></div>
+      </section>
+
+      <!-- the month -->
+      <section class="group pageblock" aria-labelledby="month-title" data-calendar>
+        <header class="group__head cal__head">
+          <h2 class="group__title" id="month-title" data-cal-title aria-live="polite"></h2>
+          <div class="cal__nav">
+            <button type="button" class="cal__arrow" data-cal-prev aria-label="Previous month" data-t-attr="aria-label">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4.5 7 10l5.5 5.5" /></svg>
+            </button>
+            <button type="button" class="reset" data-cal-today data-t>Today</button>
+            <button type="button" class="cal__arrow" data-cal-next aria-label="Next month" data-t-attr="aria-label">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7.5 4.5 13 10l-5.5 5.5" /></svg>
+            </button>
+          </div>
+        </header>
+        <p class="cal__sum" aria-live="polite" data-cal-sum></p>
+        <div class="cal__layout">
+          <div class="cal__month">
+            <div class="cal__weekdays" aria-hidden="true" data-cal-weekdays></div>
+            <div class="cal__grid" role="group" aria-label="Days of the month" data-t-attr="aria-label" data-cal-grid></div>
+            <p class="cal__key" aria-hidden="true">
+              <span><i class="cal__dot cal__dot--expired"></i><span data-t>Expired</span></span>
+              <span><i class="cal__dot cal__dot--critical"></i><span data-t>Critical</span></span>
+              <span><i class="cal__dot cal__dot--high"></i><span data-t>High</span></span>
+              <span><i class="cal__dot cal__dot--medium"></i><span data-t>Medium</span></span>
+              <span><i class="cal__dot cal__dot--low"></i><span data-t>Later</span></span>
+            </p>
+          </div>
+          <aside class="calday" aria-live="polite" data-cal-day></aside>
+        </div>
+      </section>
+    </main>
+
+    <footer class="colophon">
+      <p data-t>Corner Market is fictional, and so are its products, dates and quantities. Changes are saved in this browser only.</p>
+    </footer>
+  </div>
+
+  <div class="toasts" aria-live="polite" data-toasts></div>
+
+  <script src="js/demo/i18n-hi.js"></script>
+  <script src="js/demo/i18n.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/demo/inventory.js"></script>
+  <script src="js/demo/store.js"></script>
+  <script src="js/demo/ui.js"></script>
+  <script src="js/demo/shell.js"></script>
+  <script src="js/demo/calendar.js"></script>
+</body>
+</html>
