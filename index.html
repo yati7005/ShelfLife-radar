@@ -13,6 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/home.css" />
+  <link rel="stylesheet" href="css/interactive.css" />
   <link rel="prefetch" href="demo.html" />
   <script>(function (d) { d.classList.add("js"); var t; try { t = localStorage.getItem("shelflife-theme"); } catch (e) {} if (t !== "light" && t !== "dark") t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; d.setAttribute("data-theme", t); })(document.documentElement);</script>
 </head>
@@ -38,7 +39,7 @@
       <button type="button" class="theme-toggle" data-theme-toggle aria-label="Switch to dark mode" title="Switch to dark mode">
         <svg viewBox="0 0 20 20" aria-hidden="true"><path class="theme-toggle__moon" d="M16.6 12.4A7 7 0 0 1 7.6 3.4a7 7 0 1 0 9 9Z" /><g class="theme-toggle__sun"><circle cx="10" cy="10" r="3.6" /><path d="M10 1.8v1.8M10 16.4v1.8M1.8 10h1.8M16.4 10h1.8M4.2 4.2l1.3 1.3M14.5 14.5l1.3 1.3M4.2 15.8l1.3-1.3M14.5 5.5l1.3-1.3" /></g></svg>
       </button>
-      <a href="demo.html" class="btn btn--primary btn--sm" data-page-link>Open the demo</a>
+      <a href="demo.html" class="btn btn--primary btn--sm btn-magnetic" data-page-link>Open the demo</a>
     </div>
   </header>
 
@@ -51,7 +52,7 @@
             <h1 class="hero__title" id="hero-title" data-split data-hero>Everything has a date. <em>What happens next is up to you.</em></h1>
             <p class="hero__lead hero-in" style="--d:760ms">ShelfLife Radar helps independent grocers notice what time is doing to their shelves — and decide, while there is still time, what to do about it.</p>
             <div class="hero__cta hero-in" style="--d:880ms">
-              <a href="demo.html" class="btn btn--primary btn--lg" data-page-link>
+              <a href="demo.html" class="btn btn--primary btn--lg btn-magnetic" data-page-link>
                 Open the demo
                 <svg class="btn__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
               </a>
@@ -91,6 +92,28 @@
       </div>
     </section>
 
+    <!-- Kinetic Marquee Strip (Awwwards-style ribbon) -->
+    <div class="marquee-wrap" aria-hidden="true">
+      <div class="marquee-track">
+        <div class="marquee-content">
+          <span>ZERO OVERLOOKED DATES</span><span class="marquee-dot"></span>
+          <span>PROTECT <em>RETAIL MARGINS</em></span><span class="marquee-dot"></span>
+          <span>TIMELY <em>30%–50% MARKDOWNS</em></span><span class="marquee-dot"></span>
+          <span>SUPPLIER CREDIT RECOVERY</span><span class="marquee-dot"></span>
+          <span>FRESHNESS <em>RADAR</em></span><span class="marquee-dot"></span>
+          <span>ZERO FOOD WASTE</span><span class="marquee-dot"></span>
+        </div>
+        <div class="marquee-content">
+          <span>ZERO OVERLOOKED DATES</span><span class="marquee-dot"></span>
+          <span>PROTECT <em>RETAIL MARGINS</em></span><span class="marquee-dot"></span>
+          <span>TIMELY <em>30%–50% MARKDOWNS</em></span><span class="marquee-dot"></span>
+          <span>SUPPLIER CREDIT RECOVERY</span><span class="marquee-dot"></span>
+          <span>FRESHNESS <em>RADAR</em></span><span class="marquee-dot"></span>
+          <span>ZERO FOOD WASTE</span><span class="marquee-dot"></span>
+        </div>
+      </div>
+    </div>
+
     <!-- Inside the app: four pages, one job each. Each picture is drawn in HTML/CSS and comes alive as it scrolls in. -->
     <section class="inside" id="inside" aria-labelledby="inside-title">
       <div class="wrap">
@@ -104,7 +127,7 @@
             <p class="feature__text">Every batch is sorted by its date, with the next step spelled out — mark it down, move it to the front, or take it off sale. Record a sale in two taps, and see what a markdown leaves you over cost.</p>
             <a class="feature__go" href="demo.html" data-page-link>Open the Shelf <span aria-hidden="true">→</span></a>
           </div>
-          <div class="art art-shelf" aria-hidden="true">
+          <div class="art art-shelf" data-tilt aria-hidden="true">
             <div class="art__row" style="--r:0;--f:0"><b>Fresh Milk 1L</b><span class="is-red">1 day overdue</span><i class="art__fuse"></i><em class="art__dot art__dot--expired"></em></div>
             <div class="art__row" style="--r:1;--f:.07"><b>Greek Yogurt</b><span class="is-red">In 2 days</span><i class="art__fuse"></i><em class="art__dot art__dot--critical"></em></div>
             <div class="art__row" style="--r:2;--f:.23"><b>Orange Juice</b><span class="is-amber">In 5 days</span><i class="art__fuse"></i><em class="art__dot art__dot--high"></em></div>
@@ -119,7 +142,7 @@
             <p class="feature__text">Above the list, a bar for each of the next seven days. When Saturday has three batches running out, you see it on Wednesday — tap Saturday to see just those, and plan the markdowns before it arrives.</p>
             <a class="feature__go" href="demo.html" data-page-link>Open the Shelf <span aria-hidden="true">→</span></a>
           </div>
-          <div class="art art-week" data-art-week aria-hidden="true"></div>
+          <div class="art art-week" data-art-week data-tilt aria-hidden="true"></div>
         </article>
 
         <article class="feature" data-feature>
@@ -129,7 +152,7 @@
             <p class="feature__text">What your shelves are worth, how much of it runs out this week, and which category or supplier the losses come from — with plain advice on what to change.</p>
             <a class="feature__go" href="insights.html" data-page-link>Open Insights <span aria-hidden="true">→</span></a>
           </div>
-          <div class="art art-ins" aria-hidden="true">
+          <div class="art art-ins" data-tilt aria-hidden="true">
             <span class="art-ins__label">On your shelves, at cost</span>
             <b class="art-ins__value" data-count-to="25452">₹25,452</b>
             <div class="art-ins__bars"><i style="--h:.32;--b:0"></i><i style="--h:.58;--b:1"></i><i style="--h:.44;--b:2"></i><i style="--h:.9;--b:3"></i><i style="--h:.36;--b:4"></i><i style="--h:.64;--b:5"></i><i style="--h:.22;--b:6"></i></div>
@@ -144,7 +167,7 @@
             <p class="feature__text">Whatever leaves the shelf is recorded, so you know what was lost this month — and which suppliers still owe you credit for returns.</p>
             <a class="feature__go" href="settings.html" data-page-link>Back it all up <span aria-hidden="true">→</span></a>
           </div>
-          <div class="art art-ledger" aria-hidden="true">
+          <div class="art art-ledger" data-tilt aria-hidden="true">
             <div class="art-ledger__line" style="--r:0"><b>Sold · Greek Yogurt</b><span>5 units</span><strong class="is-violet">₹700</strong></div>
             <div class="art-ledger__line" style="--r:1"><b>Thrown away · Croissants</b><span>7 units</span><strong class="is-red">₹840</strong></div>
             <div class="art-ledger__line" style="--r:2"><b>Returned · Fresh Milk</b><span>waiting on Gokul Dairy</span><strong>₹972</strong></div>
@@ -158,7 +181,7 @@
     <section class="end" aria-labelledby="end-title">
       <div class="wrap end__inner">
         <h2 class="end__title" id="end-title" data-split>Your shelf is waiting.</h2>
-        <a href="demo.html" class="btn btn--primary btn--lg end__btn" data-page-link data-reveal style="--d:300ms">
+        <a href="demo.html" class="btn btn--primary btn--lg end__btn btn-magnetic" data-page-link data-reveal style="--d:300ms">
           Open the demo
           <svg class="btn__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
         </a>
@@ -175,5 +198,6 @@
 
   <script src="js/main.js"></script>
   <script src="js/home.js"></script>
+  <script src="js/interactive.js"></script>
 </body>
 </html>
